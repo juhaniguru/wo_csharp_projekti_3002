@@ -13,6 +13,46 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class BlogsController(IBlogService _blogService, IMapper _mapper) : ControllerBase
     {
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> RemoveBlog(int id)
+        {
+            try
+            {
+                await _blogService.Remove(id);
+                return NoContent();
+
+            } catch(NotFoundException e)
+            {
+                return NotFound(new
+                {
+                    Title = "error removing blog",
+                    Detail = e.Message    
+
+                });
+            } catch(Exception e)
+            {
+                return Problem(title: "error removig blog", detail: e.Message, statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<BlogDto>> UpdateBlog(int id, UpdateBlogReq requestData)
+        {
+            try
+            {
+                var blog = await _blogService.Edit(id, requestData);
+                return Ok(
+                    _mapper.Map<BlogDto>(blog)
+                );
+            } catch(NotFoundException e)
+            {
+                return NotFound(e.Message);
+            } catch(Exception e)
+            {
+                return Problem(title: "error updating blog", detail: e.Message, statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<BlogDto>> GetById(int id)
         {
@@ -99,7 +139,7 @@ namespace API.Controllers
 
 
 
-                 //return Ok(blog);
+                //return Ok(blog);
                 return _mapper.Map<BlogDto>(blog);
             } catch(Exception e)
             {

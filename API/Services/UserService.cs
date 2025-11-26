@@ -24,7 +24,7 @@ namespace API.Services
 
         public async Task<AppUser> GetById(int id)
         {
-            var user = await _repository.Users.FirstAsync(u => u.Id == id);
+            var user = await _repository.Users.AsNoTracking().FirstAsync(u => u.Id == id);
             return user;
 
             

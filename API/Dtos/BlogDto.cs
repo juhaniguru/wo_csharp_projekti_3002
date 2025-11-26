@@ -13,5 +13,7 @@ namespace API.Dtos
         public required string Content { get; set; }
 
         public required UserDto Owner { get; set; }
+
+        public List<TagDto> Tags { get; set; } = [];
     }
 }

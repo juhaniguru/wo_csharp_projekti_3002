@@ -1,4 +1,6 @@
 
+using API.Models;
+
 namespace API.Dtos
 {
     public class UserDto
@@ -9,5 +11,6 @@ namespace API.Dtos
         public required string Role { get; set; }
 
         public int Xp {get; set;}
+        //public AppUser Owner {get; set;}
     }
 }
